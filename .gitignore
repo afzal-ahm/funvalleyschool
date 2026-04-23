@@ -1,0 +1,6 @@
+# Ignore large media and archives
+*.mp4
+*.rar
+*.zip
+img/img.rar
+img
