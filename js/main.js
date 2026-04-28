@@ -2,7 +2,9 @@
     "use strict";
 
     // Initiate the wowjs
-    new WOW().init();
+    if (typeof WOW !== 'undefined') {
+        new WOW().init();
+    }
 
 
     // Spinner
@@ -41,41 +43,45 @@
 
 
     // Header carousel
-    $(".header-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1500,
-        items: 1,
-        dots: true,
-        loop: true,
-        nav : true,
-        navText : [
-            '<i class="bi bi-chevron-left"></i>',
-            '<i class="bi bi-chevron-right"></i>'
-        ]
-    });
+    if ($.fn.owlCarousel) {
+        $(".header-carousel").owlCarousel({
+            autoplay: true,
+            smartSpeed: 1500,
+            items: 1,
+            dots: true,
+            loop: true,
+            nav : true,
+            navText : [
+                '<i class="bi bi-chevron-left"></i>',
+                '<i class="bi bi-chevron-right"></i>'
+            ]
+        });
+    }
 
 
     // Testimonials carousel
-    $(".testimonial-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1000,
-        margin: 24,
-        dots: false,
-        loop: true,
-        nav : true,
-        navText : [
-            '<i class="bi bi-arrow-left"></i>',
-            '<i class="bi bi-arrow-right"></i>'
-        ],
-        responsive: {
-            0:{
-                items:1
-            },
-            992:{
-                items:2
+    if ($.fn.owlCarousel) {
+        $(".testimonial-carousel").owlCarousel({
+            autoplay: true,
+            smartSpeed: 1000,
+            margin: 24,
+            dots: false,
+            loop: true,
+            nav : true,
+            navText : [
+                '<i class="bi bi-arrow-left"></i>',
+                '<i class="bi bi-arrow-right"></i>'
+            ],
+            responsive: {
+                0:{
+                    items:1
+                },
+                992:{
+                    items:2
+                }
             }
-        }
-    });
+        });
+    }
     
      jQuery(document).ready(function($){
   
@@ -103,7 +109,25 @@
               }
           });
       });
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(function (element) {
+            observer.observe(element);
+        });
+    } else {
+        document.querySelectorAll('.reveal').forEach(function (element) {
+            element.classList.add('is-visible');
+        });
+    }
     
     
 })(jQuery);
-
